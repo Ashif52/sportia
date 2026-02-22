@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Sportia Live Auction Dashboard — Real-time cricket auction platform with bidding, team management, and analytics.">
+    <meta name="theme-color" content="#0f172a">
+    <title>Sportia — Live Auction Dashboard</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+
+<body>
+
+    <!-- ═══════ LOGIN PAGE ═══════ -->
+    <div class="login-page" id="login-page">
+        <div class="login-bg">
+            <div class="login-bg__orb login-bg__orb--1"></div>
+            <div class="login-bg__orb login-bg__orb--2"></div>
+            <div class="login-bg__orb login-bg__orb--3"></div>
+        </div>
+        <div class="login-card" id="login-card">
+            <div class="login-card__brand">
+                <div class="login-card__brand-icon">⚡</div>
+                <div class="login-card__brand-text"><span>AYN</span> Sports</div>
+            </div>
+            <h1 class="login-card__title">Live Auction Dashboard</h1>
+            <p class="login-card__subtitle">Sign in to access the auction command center</p>
+
+            <form class="login-form" id="login-form" autocomplete="off">
+                <!-- Role Selector -->
+                <div class="login-form__group">
+                    <label class="login-form__label" for="login-role">Select Your Role</label>
+                    <div class="login-form__role-grid" id="login-role-grid">
+                        <button type="button" class="login-role-btn active" data-role="SuperAdmin">
+                            <span class="login-role-btn__icon">🛡️</span>
+                            <span class="login-role-btn__label">Super Admin</span>
+                            <span class="login-role-btn__desc">Full System Control</span>
+                        </button>
+                        <button type="button" class="login-role-btn" data-role="Auctioneer">
+                            <span class="login-role-btn__icon">⚡</span>
+                            <span class="login-role-btn__label">Auctioneer</span>
+                            <span class="login-role-btn__desc">Full System Control</span>
+                        </button>
+                        <button type="button" class="login-role-btn" data-role="TeamOwner">
+                            <span class="login-role-btn__icon">🏏</span>
+                            <span class="login-role-btn__label">Team Owner</span>
+                            <span class="login-role-btn__desc">View-Only Dashboard</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Password Field (hidden for TeamOwner) -->
+                <div class="login-form__group" id="login-password-group">
+                    <label class="login-form__label" for="login-password">Password</label>
+                    <div class="login-form__input-wrap">
+                        <span class="login-form__input-icon">🔒</span>
+                        <input type="password" class="login-form__input" id="login-password"
+                            placeholder="Enter admin password" autocomplete="new-password">
+                        <button type="button" class="login-form__toggle-pw" id="toggle-password"
+                            aria-label="Show password">
+                            👁️
+                        </button>
+                    </div>
+                    <div class="login-form__hint">Default password: <code>ayn2026</code></div>
+                </div>
+
+                <!-- Error -->
+                <div class="login-form__error" id="login-error"></div>
+
+                <!-- Submit -->
+                <button type="submit" class="login-form__submit" id="login-submit">
+                    <span>Sign In</span>
+                    <span class="login-form__submit-arrow">→</span>
+                </button>
+            </form>
+
+            <div class="login-card__footer">
+                <span>v2.0</span> · <span>Demo Build</span> · <span>No Backend Required</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════ MAIN APPLICATION ═══════ -->
+    <div class="app-layout" id="app-layout" style="display: none;">
+
+        <!-- ═══════ Sidebar ═══════ -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Brand -->
+            <div class="sidebar__brand">
+                <div class="sidebar__brand-icon">⚡</div>
+                <div class="sidebar__brand-text">
+                    <span>AYN</span> Sports
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="sidebar__nav" id="sidebar-nav">
+                <!-- Populated by App.js based on role -->
+            </nav>
+
+            <!-- User Info & Role -->
+            <div class="sidebar__footer">
+                <div class="sidebar__user-info" id="sidebar-user-info">
+                    <!-- Populated by App.js -->
+                </div>
+                <!-- Team Selector (visible only for TeamOwner) -->
+                <div class="sidebar__team-select-wrap" id="team-select-wrap" style="display: none;">
+                    <div class="sidebar__role-label" style="margin-top: 10px;">Your Team</div>
+                    <select class="sidebar__role-select" id="team-selector">
+                        <option value="">— Select Team —</option>
+                    </select>
+                </div>
+                <button class="sidebar__logout-btn" id="btn-logout">
+                    <span>🚪</span> Sign Out
+                </button>
+                <div class="sidebar__version">v2.0 — Demo Build</div>
+            </div>
+        </aside>
+
+        <!-- Mobile Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <!-- ═══════ Main Content ═══════ -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header" id="app-header">
+                <div class="header__left">
+                    <button class="header__menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+                        <span></span><span></span><span></span>
+                    </button>
+                    <h1 class="header__title" id="header-title">Dashboard</h1>
+                </div>
+                <div class="header__right">
+                    <span class="header__status-badge draft" id="tournament-status">
+                        <span class="header__status-dot"></span>
+                        DRAFT
+                    </span>
+                    <button class="btn btn--sm btn--ghost control-only" id="btn-reset-data" title="Reset all data">
+                        <span class="btn__icon">↻</span> Reset
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Container -->
+            <div class="content" id="content-area">
+                <!-- Dashboard Module -->
+                <section class="module-section" id="module-dashboard"></section>
+
+                <!-- Teams Module -->
+                <section class="module-section" id="module-teams"></section>
+
+                <!-- Players Module -->
+                <section class="module-section" id="module-players"></section>
+
+                <!-- Auction Module -->
+                <section class="module-section" id="module-auction"></section>
+
+                <!-- Spin Wheel Module -->
+                <section class="module-section" id="module-spinwheel"></section>
+
+                <!-- Past Leagues Module -->
+                <section class="module-section" id="module-pastleagues"></section>
+
+                <!-- Reports Module -->
+                <section class="module-section" id="module-reports"></section>
+            </div>
+        </main>
+    </div>
+
+    <!-- ═══════ Global Modal Container ═══════ -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal" id="modal-container">
+            <div class="modal__header" id="modal-header">
+                <h3 class="modal__title" id="modal-title">Modal</h3>
+                <button class="modal__close" id="modal-close" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal__body" id="modal-body"></div>
+            <div class="modal__footer" id="modal-footer"></div>
+        </div>
+    </div>
+
+    <!-- ═══════ Toast Container ═══════ -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ═══════ Confirm Dialog ═══════ -->
+    <div class="confirm-overlay" id="confirm-overlay">
+        <div class="confirm-dialog" id="confirm-dialog">
+            <div class="confirm-dialog__icon" id="confirm-icon">⚠️</div>
+            <p class="confirm-dialog__message" id="confirm-message">Are you sure?</p>
+            <div class="confirm-dialog__actions">
+                <button class="btn btn--sm btn--ghost" id="confirm-cancel">Cancel</button>
+                <button class="btn btn--sm btn--danger" id="confirm-ok">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════ Scripts (order matters) ═══════ -->
+    <!-- Core -->
+    <script src="js/events.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/auth.js"></script>
+
+    <!-- Modules -->
+    <script src="js/modules/dashboard.js"></script>
+    <script src="js/modules/teams.js"></script>
+    <script src="js/modules/players.js"></script>
+    <script src="js/modules/auction.js"></script>
+    <script src="js/modules/spinwheel.js"></script>
+    <script src="js/modules/pastleagues.js"></script>
+    <script src="js/modules/reports.js"></script>
+
+    <!-- App Orchestrator -->
+    <script src="js/app.js"></script>
+</body>
+
+</html>
